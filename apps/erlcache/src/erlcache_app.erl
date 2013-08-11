@@ -10,14 +10,19 @@
 %% ===================================================================
 
 start(_StartType, _StartArgs) ->
-    case erlcache_sup:start_link() of
-        {ok, Pid} ->
-            ok = riak_core:register_vnode_module(erlcache_vnode),
-            ok = riak_core_node_watcher:service_up(erlcache, self()),
-            {ok, Pid};
-        {error, Reason} ->
-            {error, Reason}
-    end.
+    Start = erlcache_sup:start_link(),
+    ok = start_backend(),
+    ok = start_frontend(),
+    Start.
 
 stop(_State) ->
+    ok.
+
+start_backend() ->  
+    ok = riak_core:register_vnode_module(erlcache_vnode),
+    ok = riak_core_node_watcher:service_up(erlcache, self()),
+    ok.
+
+start_frontend() ->
+    ok = erlcache_cowboy_listener:start(),
     ok.
