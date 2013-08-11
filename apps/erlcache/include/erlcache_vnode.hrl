@@ -1,0 +1,2 @@
+-define(GET_COMMAND(Key), {get, Key}).
+-define(SET_COMMAND(Key, Value), {set, Key, Value}).
