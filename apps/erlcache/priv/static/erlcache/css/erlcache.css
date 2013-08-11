@@ -1,0 +1,20 @@
+body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+.sidebar-nav {
+    padding: 9px 0;
+}
+div.console {
+    padding: 5px;
+    overflow: hidden;
+    height: 700px;
+    border: 1px solid black;
+    border-radius: 4px;
+    background-color: black;
+
+    color: #ffffff;
+    font-size: 11px;
+    font-family: monospace;
+}
+
