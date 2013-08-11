@@ -1,0 +1,10 @@
+deps
+node
+rel/files/sys.config
+rel/erlcache
+apps/erlcache/ebin
+.eunit
+*.o
+*.beam
+*.plt
+*.dump
