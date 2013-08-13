@@ -28,10 +28,10 @@ env([], _Default, {ok, Value}) ->
 
 get(Key) ->
     DocIdx = riak_core_util:chash_key({term_to_binary(static), Key}),
-    [PrefList] = riak_core_apl:get_apl(DocIdx, 1, erlcache),
-    riak_core_vnode_master:sync_command(PrefList, ?GET_COMMAND(Key), erlcache_vnode_master).
+    [Pref] = riak_core_apl:get_apl(DocIdx, 1, erlcache),
+    riak_core_vnode_master:sync_command(Pref, ?GET_COMMAND(Key), erlcache_vnode_master).
 
 set(Key, Value) ->
     DocIdx = riak_core_util:chash_key({term_to_binary(static), Key}),
-    [PrefList] = riak_core_apl:get_apl(DocIdx, 1, erlcache),
-    riak_core_vnode_master:sync_command(PrefList, ?SET_COMMAND(Key, Value), erlcache_vnode_master).
+    [Pref] = riak_core_apl:get_apl(DocIdx, 1, erlcache),
+    riak_core_vnode_master:sync_command(Pref, ?SET_COMMAND(Key, Value), erlcache_vnode_master).

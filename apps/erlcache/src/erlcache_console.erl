@@ -6,51 +6,13 @@
          ringready/1]).
 
 join([NodeStr]) ->
-    case do_join(NodeStr) of
-        ok ->
-            io:format("Sent join request to ~s~n", [NodeStr]),
-            ok;
-        {error, not_reachable} ->
-            io:format("Node ~s is not reachable!~n", [NodeStr]),
-            error;
-        {error, different_ring_sizes} ->
-            io:format("Failed: ~s has a different ring_creation_size~n", [NodeStr]),
-            error
-    end;
-join(_) ->
-    io:format("Join requires a node to join with.~n"),
-    error.
-
-do_join(NodeStr) when is_list(NodeStr) ->
-    do_join(riak_core_util:str_to_node(NodeStr));
-do_join(Node) when is_atom(Node) ->
-    {ok, OurRingSize} = application:get_env(riak_core, ring_creation_size),
-    case net_adm:ping(Node) of
-        pong ->
-            io:format("Joining node ~p~n", [Node]),
-            case rpc:call(Node,
-                          application,
-                          get_env, 
-                          [riak_core, ring_creation_size]) of
-                {ok, OurRingSize} ->
-                    riak_core_gossip:send_ring(Node, node());
-                _ -> 
-                    {error, different_ring_sizes}
-            end;
-        pang ->
-            {error, not_reachable}
-    end.
+    riak_core:join(NodeStr).
 
 leave([]) ->
-    remove_node(node()).
+    riak_core:leave().
 
 remove([Node]) ->
-    remove_node(list_to_atom(Node)).
-
-remove_node(Node) when is_atom(Node) ->
-    Res = riak_core_gossip:remove_from_cluster(Node),
-    io:format("~p
-", [Res]).
+    riak_core:remove(Node).
 
 -spec(ringready([]) -> ok | error).
 ringready([]) ->

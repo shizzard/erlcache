@@ -19,8 +19,11 @@ stop(_State) ->
     ok.
 
 start_backend() ->  
-    ok = riak_core:register_vnode_module(erlcache_vnode),
-    ok = riak_core_node_watcher:service_up(erlcache, self()),
+    riak_core:register(erlcache, [
+        {vnode_module, erlcache_vnode}
+    ]),
+    % ok = riak_core:register_vnode_module(erlcache_vnode),
+    % ok = riak_core_node_watcher:service_up(erlcache, self()),
     ok.
 
 start_frontend() ->
